@@ -16,7 +16,9 @@ pickMongoPrimary(MONGO_URL, {timeout: TIMEOUT}, function(err, primary) {
     throw err;
   } else {
     var parsedMongoURL = mongodbUrl.parse(MONGO_URL);
-
+    if(typeof primary == 'undefined') { // e.g. non-RS
+      primary = parsedMongoURL.hosts[0].host; 
+    }
     var mongoShellConfig = util.format("%s/%s", 
       primary, parsedMongoURL.database
     );
