@@ -25,7 +25,10 @@ pickMongoPrimary(MONGO_URL, {timeout: TIMEOUT}, function(err, primary) {
 
     if(parsedMongoURL.username) {
       var ssl = parsedMongoURL.options.ssl ? "--ssl" : "";
-      mongoShellConfig = util.format("%s "+ssl+" -u %s -p %s",
+      var authSource = parsedMongoURL.options.authSource
+           ? "--authenticationDatabase " + parsedMongoURL.options.authSource
+           : "";
+      mongoShellConfig = util.format("%s "+ssl+" "+authSource+" -u %s -p %s",
         mongoShellConfig, parsedMongoURL.username, parsedMongoURL.password
       );
     }
